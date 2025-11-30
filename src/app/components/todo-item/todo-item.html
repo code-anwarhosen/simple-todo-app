@@ -1,0 +1,16 @@
+<div class="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow-sm opacity-70 hover:shadow-md transition duration-200">
+    <div class="flex items-center">
+        @if (todo.completed) {
+            <div (click)="onToggleCompleted()" class="h-6 w-6 rounded-full border-2 bg-indigo-600 border-indigo-600 flex items-center justify-center cursor-pointer">
+                <i class="fas fa-check text-white text-xs"></i>
+            </div>
+        } @else {
+            <div (click)="onToggleCompleted()" class="h-6 w-6 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer">
+            </div>
+        }
+        <span class="ml-3 text-black text-[1.1rem]" [ngClass]="todo.completed ? 'line-through text-gray-500':''"> {{ todo.title }} </span>
+    </div>
+    <button (click)="onDeleteTask()" class="text-gray-400 hover:text-red-500 transition duration-200 p-2 rounded-full hover:bg-red-50 cursor-pointer">
+        <i class="fas fa-times"></i>
+    </button>
+</div>

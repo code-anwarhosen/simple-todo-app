@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { TodoItem } from '../../components/todo-item/todo-item';
+import { TodoInput } from '../../components/todo-input/todo-input';
 import { TodoModel } from '../../models/todo.model';
 
 @Component({
   selector: 'app-todo',
-  imports: [ TodoItem ],
+  imports: [ TodoItem, TodoInput ],
   templateUrl: './todo.html',
   styleUrl: './todo.css',
 })
@@ -21,12 +22,20 @@ export class Todo {
         return { ...task, completed: todo.completed };
       return task;
     });
-    console.log(this.todos);
   }
 
   onDeleteTodo(id: number) {
     this.todos = this.todos.filter( (task) => task.id !== id );
-    
+  }
+
+  onAddTodo(title: string) {
+    const newTodo: TodoModel = {
+      id: this.todos.length ? Math.max(...this.todos.map(t => t.id)) + 1 : 1,
+      title: title,
+      completed: false,
+    };
+
+    this.todos = [ ...this.todos, newTodo ];
     console.log(this.todos);
   }
 

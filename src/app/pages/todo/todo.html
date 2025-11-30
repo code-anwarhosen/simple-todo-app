@@ -9,43 +9,43 @@
 
         <!-- Main Content -->
         <div class="p-6">
-            <!-- Add Todo Form -->
-            <div class="mb-6">
-                <div class="flex shadow-sm rounded-lg overflow-hidden">
-                    <input type="text" placeholder="What needs to be done?"
-                        class="grow px-4 py-3 border-0 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <button class="bg-indigo-600 text-white px-5 hover:bg-indigo-700 transition duration-200">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
-                </div>
-            </div>
+
+            <!-- todo input section -->
+            <app-todo-input (addTask)="onAddTodo($event)"></app-todo-input>
 
             <!-- Filter Buttons -->
             <div class="flex mb-4 space-x-2">
-                <button class="filter-btn active bg-blue-500 text-white px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button class="active bg-blue-500 text-white px-3 py-1 rounded-lg text-sm transition duration-200">
                     All
                 </button>
-                <button class="filter-btn bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
                     Active
                 </button>
-                <button class="filter-btn bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
                     Completed
                 </button>
             </div>
 
-            <!-- Todo List -->
-            <div class="mb-6">
-                @for (item of todos; track $index) {
+            @if (todos.length > 0) {
+                <!-- Todo List -->
+                <div class="mb-6  max-h-92 overflow-y-auto">
+                    @for (item of todos; track $index) {
                     <div class="mb-2">
-                        <app-todo-item 
-                            [todo]="item" 
-                            (toggleTask)="onToggleTodo($event)" 
+                        <app-todo-item [todo]="item" (toggleTask)="onToggleTodo($event)"
                             (deleteTask)="onDeleteTodo($event)">
                         </app-todo-item>
                     </div>
-                }
-            </div>
-            
+                    }
+                </div>
+            } @else {
+                <!-- Empty State -->
+                <div class="text-center py-8">
+                    <i class="fas fa-clipboard-list text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">No tasks found. Add a task to get started!</p>
+                </div>
+            }
+
+
             <!-- Action Buttons at Bottom -->
             <div class="flex justify-between pt-2 border-t border-gray-200">
                 <button

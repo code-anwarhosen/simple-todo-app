@@ -39,4 +39,32 @@ export class Todo {
     console.log(this.todos);
   }
 
+  // Danger zone: clears all completed todos
+  onClearCompleted() {
+    const isClear = confirm("Are you sure you want to clear all completed todos?")
+    if (!isClear) 
+      return;
+
+    this.todos = this.todos.filter( (todo: TodoModel) => {
+      return !todo.completed
+    });
+  }
+
+  // Danger zone: deletes all todos
+  onDeleteAll() {
+    const isDelete = confirm("Are you sure you want to delete all todos?")
+    if (!isDelete) 
+      return;
+    
+    this.todos = []
+  }
+
+  // Filters
+  onGetActiveTodos() {
+    this.todos = this.todos.filter( (todo: TodoModel) => !todo.completed)
+  }
+
+  onGetCompletedTodos() {
+    this.todos = this.todos.filter( (todo: TodoModel) => todo.completed)
+  }
 }

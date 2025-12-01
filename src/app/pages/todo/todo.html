@@ -18,14 +18,15 @@
                 <button class="active bg-blue-500 text-white px-3 py-1 rounded-lg text-sm transition duration-200">
                     All
                 </button>
-                <button class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button (click)="onGetActiveTodos()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
                     Active
                 </button>
-                <button class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button (click)="onGetCompletedTodos()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
                     Completed
                 </button>
             </div>
 
+            <!-- Populate todos here -->
             @if (todos.length > 0) {
                 <!-- Todo List -->
                 <div class="mb-6  max-h-92 overflow-y-auto">
@@ -45,14 +46,15 @@
                 </div>
             }
 
-
             <!-- Action Buttons at Bottom -->
             <div class="flex justify-between pt-2 border-t border-gray-200">
                 <button
+                    (click)="onClearCompleted()"
                     class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition duration-200 flex items-center">
                     <i class="fas fa-broom mr-2"></i> Clear Completed
                 </button>
                 <button
+                    (click)="onDeleteAll()"
                     class="px-4 py-2 text-sm text-red-500 hover:text-red-700 transition duration-200 flex items-center">
                     <i class="fas fa-trash-alt mr-2"></i> Delete All
                 </button>

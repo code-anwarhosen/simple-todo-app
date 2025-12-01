@@ -1,42 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TodoItem } from '../../components/todo-item/todo-item';
 import { TodoInput } from '../../components/todo-input/todo-input';
 import { TodoModel } from '../../models/todo.model';
+import { StorageService } from '../../services/storage-service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-todo',
-  imports: [ TodoItem, TodoInput ],
+  imports: [TodoItem, TodoInput, NgClass],
   templateUrl: './todo.html',
   styleUrl: './todo.css',
 })
-export class Todo {
-  todos: TodoModel[] = [
-    { id: 1, title: 'Add filtering functionality', completed: false },
-    { id: 2, title: 'Implement drag-and-drop', completed: true },
-    { id: 3, title: 'Create user authentication', completed: false },
-  ];
+export class Todo implements OnInit {
+  todos: TodoModel[] = [];
+  api = inject(StorageService);
+  activeTab: string = 'all';
 
-  onToggleTodo(todo: TodoModel) {
-    this.todos = this.todos.map( (task) => {
-      if (task.id === todo.id) 
-        return { ...task, completed: todo.completed };
-      return task;
-    });
+  ngOnInit() {
+    this.refreshAllTodos()
+    console.log('Initial todo list:', this.todos);
   }
 
-  onDeleteTodo(id: number) {
-    this.todos = this.todos.filter( (task) => task.id !== id );
+  refreshAllTodos() {
+    this.todos = this.api.getAllTodoList();
+    this.activeTab = 'all';
   }
 
   onAddTodo(title: string) {
-    const newTodo: TodoModel = {
-      id: this.todos.length ? Math.max(...this.todos.map(t => t.id)) + 1 : 1,
-      title: title,
-      completed: false,
-    };
+    this.api.addTodo(title);
+    this.refreshAllTodos();
+  }
 
-    this.todos = [ ...this.todos, newTodo ];
-    console.log(this.todos);
+  onDeleteTodo(id: number) {
+    this.api.deleteTodoById(id);
+    this.refreshAllTodos();
+  }
+
+  onToggleTodo(todo: TodoModel) {
+    this.api.toggleTodoCompletion(todo);
   }
 
   // Danger zone: clears all completed todos
@@ -45,9 +46,8 @@ export class Todo {
     if (!isClear) 
       return;
 
-    this.todos = this.todos.filter( (todo: TodoModel) => {
-      return !todo.completed
-    });
+    this.api.clearCompletedTodos();
+    this.refreshAllTodos();
   }
 
   // Danger zone: deletes all todos
@@ -56,15 +56,18 @@ export class Todo {
     if (!isDelete) 
       return;
     
-    this.todos = []
+    this.api.deleteAllTodos();
+    this.refreshAllTodos();
   }
 
   // Filters
   onGetActiveTodos() {
-    this.todos = this.todos.filter( (todo: TodoModel) => !todo.completed)
+    this.activeTab = 'active';
+    this.todos = this.api.getActiveTodos();
   }
 
   onGetCompletedTodos() {
-    this.todos = this.todos.filter( (todo: TodoModel) => todo.completed)
+    this.activeTab = 'completed';
+    this.todos = this.api.getCompletedTodos();
   }
 }

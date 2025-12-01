@@ -3,7 +3,7 @@
         <div class="bg-linear-to-r from-indigo-600 to-purple-600 p-6 text-white">
             <div class="flex items-center justify-center flex-col">
                 <h1 class="text-2xl font-bold">My Todo List</h1>
-                <p class="text-indigo-100 mt-1">Stay organized and productive</p>
+                <p class="text-indigo-100 mt-1">Stay Organized</p>
             </div>
         </div>
 
@@ -15,13 +15,25 @@
 
             <!-- Filter Buttons -->
             <div class="flex mb-4 space-x-2">
-                <button class="active bg-blue-500 text-white px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button 
+                    (click)="refreshAllTodos()" 
+                    class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200"
+                    [ngClass]="activeTab === 'all' ? 'active' : ''"
+                >
                     All
                 </button>
-                <button (click)="onGetActiveTodos()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button 
+                    (click)="onGetActiveTodos()" 
+                    class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200"
+                    [ngClass]="activeTab === 'active' ? 'active' : ''"
+                >
                     Active
                 </button>
-                <button (click)="onGetCompletedTodos()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200">
+                <button 
+                    (click)="onGetCompletedTodos()" 
+                    class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition duration-200"
+                    [ngClass]="activeTab === 'completed' ? 'active' : ''"
+                >
                     Completed
                 </button>
             </div>
@@ -29,7 +41,7 @@
             <!-- Populate todos here -->
             @if (todos.length > 0) {
                 <!-- Todo List -->
-                <div class="mb-6  max-h-92 overflow-y-auto">
+                <div class="mb-2  max-h-92 overflow-y-auto">
                     @for (item of todos; track $index) {
                     <div class="mb-2">
                         <app-todo-item [todo]="item" (toggleTask)="onToggleTodo($event)"
